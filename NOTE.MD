@@ -39,14 +39,14 @@
     created_at,
     updated_at
     ]
--   Certificate_detail - fields apa saja yang direplace [
-    certificate_detail_id,
+-   Certificate_fields - fields apa saja yang direplace [
+    certificate_field_id,
     certificate_id,
     certificate_field,
     certificate_value
     ]
--   Certificate_user_list - daftar user yang akan di berikan sertifikat [
-    certificate_user_list_id,
+-   Certificate_user - daftar user yang akan di berikan sertifikat [
+    certificate_user_id,
     certificate_id,
     user_id,
     created_at,
