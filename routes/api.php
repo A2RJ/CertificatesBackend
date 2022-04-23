@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/', function () {
+    return response()->json([
+        'message' => 'Welcome to the UTS Services API'
+    ]);
+});
+
+Route::get('/users', function () {
+    return response()->json(User::paginate(10));
+});
+
+Route::get('/users/{search}', function ($search) {
+    return response()->json(User::where('name', 'like', '%' . $search . '%')->orWhere('email', 'like', '%' . $search . '%')->paginate(10));
 });
