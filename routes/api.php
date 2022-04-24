@@ -26,7 +26,14 @@ Route::get('/', function () {
 });
 
 Route::get('/users', function () {
-    return response()->json(User::paginate(10));
+    if (request()->has('search')) {
+        $users = User::where('name', 'LIKE', '%' . request('search') . '%')
+            ->orWhere('email', 'LIKE', '%' . request('search') . '%')
+            ->paginate(10);
+    } else {
+        $users = User::paginate(10);
+    }
+    return response()->json($users);
 });
 
 Route::get('/users/{search}', function ($search) {
