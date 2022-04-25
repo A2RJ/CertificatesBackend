@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Certificates extends Model
 {
     use HasFactory;
-    public $fillable = ['name', 'description', 'file', 'author', 'created_at', 'updated_at'];
+    public $fillable = ['name', 'description', 'file', 'author'];
 }

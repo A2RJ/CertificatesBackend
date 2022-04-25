@@ -14,18 +14,10 @@ class CertificatesController extends Controller
      */
     public function index()
     {
-        //
+        $certificates = Certificates::paginate(10);
+        return response()->json($certificates);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +27,7 @@ class CertificatesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -81,5 +73,15 @@ class CertificatesController extends Controller
     public function destroy(Certificates $certificates)
     {
         //
+    }
+
+    public function upload(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('certificates_template'), $filename);
+            return response()->json(['file' => $filename]);
+        }
     }
 }
