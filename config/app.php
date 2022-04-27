@@ -202,7 +202,7 @@ return [
         /**
          * thirtd package aliases
          */
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
         'QR' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,

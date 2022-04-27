@@ -3,6 +3,7 @@
 use App\Http\Controllers\CertificateFieldsController;
 use App\Http\Controllers\CertificatesController;
 use App\Http\Controllers\CertificateUsersController;
+use App\Http\Controllers\ReplaceConvertController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -51,10 +52,14 @@ Route::get('/csrf-cookie', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
 
+Route::get('/export', [ReplaceConvertController::class, 'exportPDF']);
+
 // Route group
 Route::group(['prefix' => 'certificates'], function () {
     // certificates
     Route::get('/', [CertificatesController::class, 'index']);
+    Route::get('/replace', [CertificatesController::class, 'replaceWord']);
+    Route::get('/replaceExport', [CertificatesController::class, 'replaceExport']);
     Route::get('/{certificates}', [CertificatesController::class, 'show']);
     Route::post('', [CertificatesController::class, 'store']);
     Route::put('/{certificates}', [CertificatesController::class, 'update']);

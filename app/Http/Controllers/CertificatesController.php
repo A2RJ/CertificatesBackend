@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Certificates;
 use Illuminate\Http\Request;
+use Novay\WordTemplate\WordTemplate;
 
 class CertificatesController extends Controller
 {
@@ -77,8 +78,7 @@ class CertificatesController extends Controller
      */
     public function destroy(Certificates $certificates)
     {
-        $certificates->delete();
-        return response()->json(null, 204);
+        return response()->json($certificates->delete(), 204);
     }
 
     public function upload(Request $request)
@@ -87,7 +87,9 @@ class CertificatesController extends Controller
             $file = $request->file('file');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('certificates_template'), $filename);
-            return response()->json(['file' => $filename]);
+            return response()->json(['file' => $filename], 200);
+        } else {
+            return response()->json(['error' => 'No file selected'], 400);
         }
     }
 }
