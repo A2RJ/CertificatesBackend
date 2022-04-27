@@ -14,17 +14,8 @@ class CertificateUsersController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $certificateUsers = CertificateUsers::paginate(10);
+        return response()->json($certificateUsers);
     }
 
     /**
@@ -35,7 +26,13 @@ class CertificateUsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'certificate_id' => 'required|integer',
+            'user_id' => 'required|integer',
+        ]);
+
+        $certificateUsers = CertificateUsers::create($request->all());
+        return response()->json($certificateUsers, 201);
     }
 
     /**
@@ -46,18 +43,7 @@ class CertificateUsersController extends Controller
      */
     public function show(CertificateUsers $certificateUsers)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CertificateUsers  $certificateUsers
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CertificateUsers $certificateUsers)
-    {
-        //
+        return response()->json($certificateUsers);
     }
 
     /**
@@ -69,7 +55,13 @@ class CertificateUsersController extends Controller
      */
     public function update(Request $request, CertificateUsers $certificateUsers)
     {
-        //
+        $request->validate([
+            'certificate_id' => 'required|integer',
+            'user_id' => 'required|integer',
+        ]);
+
+        $certificateUsers->update($request->all());
+        return response()->json($certificateUsers, 200);
     }
 
     /**
@@ -80,6 +72,7 @@ class CertificateUsersController extends Controller
      */
     public function destroy(CertificateUsers $certificateUsers)
     {
-        //
+        $certificateUsers->delete();
+        return response()->json(null, 204);
     }
 }

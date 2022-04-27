@@ -27,7 +27,15 @@ class CertificatesController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'file' => 'required|string|max:255',
+            'user_id' => 'required|integer',
+        ]);
+
+        $certificates = Certificates::create($request->all());
+        return response()->json($certificates, 201);
     }
 
     /**
@@ -38,18 +46,7 @@ class CertificatesController extends Controller
      */
     public function show(Certificates $certificates)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Certificates  $certificates
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Certificates $certificates)
-    {
-        //
+        return response()->json($certificates);
     }
 
     /**
@@ -61,7 +58,15 @@ class CertificatesController extends Controller
      */
     public function update(Request $request, Certificates $certificates)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'file' => 'required|string|max:255',
+            'user_id' => 'required|integer',
+        ]);
+
+        $certificates->update($request->all());
+        return response()->json($certificates, 200);
     }
 
     /**
@@ -72,7 +77,8 @@ class CertificatesController extends Controller
      */
     public function destroy(Certificates $certificates)
     {
-        //
+        $certificates->delete();
+        return response()->json(null, 204);
     }
 
     public function upload(Request $request)

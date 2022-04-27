@@ -9,10 +9,17 @@ class CertificateUsers extends Model
 {
     use HasFactory;
     public $fillable = [
-        "certificate_user_id",
         "certificate_id",
-        "user_id",
-        'created_at',
-        'updated_at'
+        "user_id"
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'certificate_user_id';
+    }
 }

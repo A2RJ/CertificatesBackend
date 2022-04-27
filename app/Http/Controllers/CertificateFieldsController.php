@@ -14,17 +14,8 @@ class CertificateFieldsController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $certificateFields = CertificateFields::paginate(10);
+        return response()->json($certificateFields);
     }
 
     /**
@@ -35,29 +26,14 @@ class CertificateFieldsController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'certificate_id' => 'required|integer',
+            'certificate_field' => 'required|string|max:255',
+            'certificate_value' => 'required|string|max:255',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CertificateFields  $certificateFields
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CertificateFields $certificateFields)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CertificateFields  $certificateFields
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CertificateFields $certificateFields)
-    {
-        //
+        $certificateFields = CertificateFields::create($request->all());
+        return response()->json($certificateFields, 201);
     }
 
     /**
@@ -69,7 +45,14 @@ class CertificateFieldsController extends Controller
      */
     public function update(Request $request, CertificateFields $certificateFields)
     {
-        //
+        $request->validate([
+            'certificate_id' => 'required|integer',
+            'certificate_field' => 'required|string|max:255',
+            'certificate_value' => 'required|string|max:255',
+        ]);
+
+        $certificateFields->update($request->all());
+        return response()->json($certificateFields, 200);
     }
 
     /**
@@ -80,6 +63,7 @@ class CertificateFieldsController extends Controller
      */
     public function destroy(CertificateFields $certificateFields)
     {
-        //
+        $certificateFields->delete();
+        return response()->json(null, 204);
     }
 }

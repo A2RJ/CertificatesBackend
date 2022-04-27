@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CertificateFieldsController;
 use App\Http\Controllers\CertificatesController;
+use App\Http\Controllers\CertificateUsersController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -49,10 +51,25 @@ Route::get('/csrf-cookie', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
 
-// certificates
-Route::get('/certificates', [CertificatesController::class, 'index']);
-Route::get('/certificates/{id}', [CertificatesController::class, 'show']);
-Route::post('/certificates', [CertificatesController::class, 'store']);
-Route::put('/certificates/{id}', [CertificatesController::class, 'update']);
-Route::delete('/certificates/{id}', [CertificatesController::class, 'destroy']);
-Route::post('/certificates/upload', [CertificatesController::class, 'upload']);
+// Route group
+Route::group(['prefix' => 'certificates'], function () {
+    // certificates
+    Route::get('/', [CertificatesController::class, 'index']);
+    Route::get('/{certificates}', [CertificatesController::class, 'show']);
+    Route::post('', [CertificatesController::class, 'store']);
+    Route::put('/{certificates}', [CertificatesController::class, 'update']);
+    Route::delete('/{certificates}', [CertificatesController::class, 'destroy']);
+    Route::post('/upload', [CertificatesController::class, 'upload']);
+    // certificate fields
+    Route::get('/{certificates}/fields', [CertificateFieldsController::class, 'fields']);
+    Route::get('/{certificates}/fields/{fields}', [CertificateFieldsController::class, 'field']);
+    Route::post('/{certificates}/fields', [CertificateFieldsController::class, 'storeField']);
+    Route::put('/{certificates}/fields/{fields}', [CertificateFieldsController::class, 'updateField']);
+    Route::delete('/{certificates}/fields/{fields}', [CertificateFieldsController::class, 'destroyField']);
+    // certificate users
+    Route::get('/{certificates}/users', [CertificateUsersController::class, 'users']);
+    Route::get('/{certificates}/users/{users}', [CertificateUsersController::class, 'user']);
+    Route::post('/{certificates}/users', [CertificateUsersController::class, 'storeUser']);
+    Route::put('/{certificates}/users/{users}', [CertificateUsersController::class, 'updateUser']);
+    Route::delete('/{certificates}/users/{users}', [CertificateUsersController::class, 'destroyUser']);
+});
