@@ -34,7 +34,7 @@ class CertificatesController extends Controller
             'user_id' => 'required|integer',
         ]);
 
-        $certificates = Certificates::create($request->all());
+        $certificates = Certificates::create($request->only(['name', 'description', 'file', 'user_id']));
         return response()->json($certificates, 201);
     }
 
@@ -65,7 +65,7 @@ class CertificatesController extends Controller
             'user_id' => 'required|integer',
         ]);
 
-        $certificates->update($request->all());
+        $certificates->update($request->only(['name', 'description', 'file', 'user_id']));
         return response()->json($certificates, 200);
     }
 

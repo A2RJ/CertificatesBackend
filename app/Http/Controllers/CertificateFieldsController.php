@@ -32,7 +32,7 @@ class CertificateFieldsController extends Controller
             'certificate_value' => 'required|string|max:255',
         ]);
 
-        $certificateFields = CertificateFields::create($request->all());
+        $certificateFields = CertificateFields::create($request->only(['certificate_id', 'certificate_field', 'certificate_value']));
         return response()->json($certificateFields, 201);
     }
 
@@ -51,7 +51,7 @@ class CertificateFieldsController extends Controller
             'certificate_value' => 'required|string|max:255',
         ]);
 
-        $certificateFields->update($request->all());
+        $certificateFields->update($request->only(['certificate_id', 'certificate_field', 'certificate_value']));
         return response()->json($certificateFields, 200);
     }
 
