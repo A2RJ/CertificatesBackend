@@ -4,28 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Certificates;
 use Illuminate\Http\Request;
-use Novay\WordTemplate\WordTemplate;
 
 class CertificatesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $certificates = Certificates::paginate(10);
-        return response()->json($certificates);
+        $perPage = request()->has('perPage') ? request('perPage') : 10;
+        if (request()->has('search')) {
+            $certificates = Certificates::where('name', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('description', 'LIKE', '%' . request('search') . '%')
+                ->with('fields', 'participant')
+                ->paginate($perPage);
+        } else {
+            $certificates = Certificates::with('fields', 'participant')->paginate($perPage);
+        }
+        return response()->json($certificates, 200);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -39,24 +34,11 @@ class CertificatesController extends Controller
         return response()->json($certificates, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Certificates  $certificates
-     * @return \Illuminate\Http\Response
-     */
     public function show(Certificates $certificates)
     {
         return response()->json($certificates);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Certificates  $certificates
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Certificates $certificates)
     {
         $request->validate([
@@ -70,12 +52,6 @@ class CertificatesController extends Controller
         return response()->json($certificates, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Certificates  $certificates
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Certificates $certificates)
     {
         return response()->json($certificates->delete(), 204);

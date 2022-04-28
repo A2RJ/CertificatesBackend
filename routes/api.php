@@ -4,7 +4,6 @@ use App\Http\Controllers\CertificateFieldsController;
 use App\Http\Controllers\CertificatesController;
 use App\Http\Controllers\CertificateUsersController;
 use App\Http\Controllers\ReplaceConvertController;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,52 +28,35 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/users', function () {
-    $perPage = request()->has('perPage') ? request('perPage') : 10;
-    if (request()->has('search')) {
-        $users = User::where('name', 'LIKE', '%' . request('search') . '%')
-            ->orWhere('email', 'LIKE', '%' . request('search') . '%')
-            ->paginate($perPage);
-    } else {
-        $users = User::paginate($perPage);
-    }
-    return response()->json($users);
-});
-
-Route::get('/users/{search}', function ($search) {
-    return response()->json(User::where('name', 'like', '%' . $search . '%')->orWhere('email', 'like', '%' . $search . '%')->paginate(10));
-});
-
 Route::get('/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
+
 Route::get('/csrf-cookie', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
-
-Route::get('/export', [ReplaceConvertController::class, 'exportPDF']);
 
 // Route group
 Route::group(['prefix' => 'certificates'], function () {
     // certificates
     Route::get('/', [CertificatesController::class, 'index']);
-    Route::get('/replace', [CertificatesController::class, 'replaceWord']);
-    Route::get('/replaceExport', [CertificatesController::class, 'replaceExport']);
     Route::get('/{certificates}', [CertificatesController::class, 'show']);
-    Route::post('', [CertificatesController::class, 'store']);
+    Route::post('/', [CertificatesController::class, 'store']);
     Route::put('/{certificates}', [CertificatesController::class, 'update']);
     Route::delete('/{certificates}', [CertificatesController::class, 'destroy']);
     Route::post('/upload', [CertificatesController::class, 'upload']);
     // certificate fields
-    Route::get('/{certificates}/fields', [CertificateFieldsController::class, 'fields']);
-    Route::get('/{certificates}/fields/{fields}', [CertificateFieldsController::class, 'field']);
-    Route::post('/{certificates}/fields', [CertificateFieldsController::class, 'storeField']);
-    Route::put('/{certificates}/fields/{fields}', [CertificateFieldsController::class, 'updateField']);
-    Route::delete('/{certificates}/fields/{fields}', [CertificateFieldsController::class, 'destroyField']);
+    Route::get('/{certificates}/fields', [CertificateFieldsController::class, 'index']);
+    Route::get('/{certificates}/fields/{fields}', [CertificateFieldsController::class, 'show']);
+    Route::post('/{certificates}/fields', [CertificateFieldsController::class, 'store']);
+    Route::put('/{certificates}/fields/{fields}', [CertificateFieldsController::class, 'update']);
+    Route::delete('/{certificates}/fields/{fields}', [CertificateFieldsController::class, 'destroy']);
     // certificate users
-    Route::get('/{certificates}/users', [CertificateUsersController::class, 'users']);
-    Route::get('/{certificates}/users/{users}', [CertificateUsersController::class, 'user']);
-    Route::post('/{certificates}/users', [CertificateUsersController::class, 'storeUser']);
-    Route::put('/{certificates}/users/{users}', [CertificateUsersController::class, 'updateUser']);
-    Route::delete('/{certificates}/users/{users}', [CertificateUsersController::class, 'destroyUser']);
+    Route::get('/{certificates}/users', [CertificateUsersController::class, 'index']);
+    Route::get('/{certificates}/users/{users}', [CertificateUsersController::class, 'show']);
+    Route::post('/{certificates}/users', [CertificateUsersController::class, 'store']);
+    Route::put('/{certificates}/users/{users}', [CertificateUsersController::class, 'update']);
+    Route::delete('/{certificates}/users/{users}', [CertificateUsersController::class, 'destroy']);
+    // create certificate
+    Route::get('/create/{certificates}/users/{users}', [ReplaceConvertController::class, 'createCertificates']);
 });

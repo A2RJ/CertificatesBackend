@@ -24,4 +24,14 @@ class Certificates extends Model
     {
         return 'id_certificate';
     }
+
+    public function fields()
+    {
+        return $this->hasMany(CertificateFields::class, 'certificate_id', 'id_certificate');
+    }
+
+    public function participant()
+    {
+        return $this->hasMany(CertificateUsers::class, 'certificate_id', 'id_certificate');
+    }
 }

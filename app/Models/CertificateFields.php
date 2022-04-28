@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CertificateFields extends Model
 {
     use HasFactory;
+    // public $table = 'certificatefields';
     public $fillable = [
         "certificate_id",
         "certificate_field",

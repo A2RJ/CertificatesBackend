@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Novay\WordTemplate\WordTemplate;
 
 class ReplaceConvertController extends Controller
 {
@@ -8,7 +9,7 @@ class ReplaceConvertController extends Controller
      * https://www.scratchcode.io/how-to-convert-word-to-pdf-in-laravel/#:~:text=Open%20the%20controller%20file%20and%20write%20down%20the%20following%20code%20into%20it.&text=Now%20access%20the%20URL%20%2Fdocument,pdf%20.
      */
 
-    public function exportPDF()
+    public function createCertificates()
     {
         /* Set the PDF Engine Renderer Path */
         $domPdfPath = base_path('vendor/dompdf/dompdf');
