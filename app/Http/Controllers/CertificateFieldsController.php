@@ -7,39 +7,32 @@ use Illuminate\Http\Request;
 
 class CertificateFieldsController extends Controller
 {
-    public function index()
+    public function index($certificates)
     {
-        $certificateFields = CertificateFields::paginate(10);
+        $certificateFields = CertificateFields::where('certificate_id', $certificates)->get();
         return response()->json($certificateFields);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'certificate_id' => 'required|integer',
-            'certificate_field' => 'required|string|max:255',
-            'certificate_value' => 'required|string|max:255',
+            '*.certificate_id' => 'required|integer',
+            '*.certificate_field' => 'required|string|max:255',
         ]);
 
-        $certificateFields = CertificateFields::create($request->only(['certificate_id', 'certificate_field', 'certificate_value']));
+        $certificateFields = [];
+        foreach ($request->all() as $certificateField) {
+            $certificateFields[] = CertificateFields::create($certificateField);
+        }
+
         return response()->json($certificateFields, 201);
     }
 
-    public function update(Request $request, CertificateFields $certificateFields)
+    public function destroy($certificate, $certificateField)
     {
-        $request->validate([
-            'certificate_id' => 'required|integer',
-            'certificate_field' => 'required|string|max:255',
-            'certificate_value' => 'required|string|max:255',
-        ]);
+        $certificate = CertificateFields::where('certificate_id', $certificate)->where('certificate_field_id', $certificateField)->first();
+        $certificate->delete();
 
-        $certificateFields->update($request->only(['certificate_id', 'certificate_field', 'certificate_value']));
-        return response()->json($certificateFields, 200);
-    }
-
-    public function destroy(CertificateFields $certificateFields)
-    {
-        $certificateFields->delete();
-        return response()->json(null, 204);
+        return response()->json($certificate, 204);
     }
 }

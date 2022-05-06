@@ -46,11 +46,9 @@ Route::group(['prefix' => 'certificates'], function () {
     Route::delete('/{certificates}', [CertificatesController::class, 'destroy']);
     Route::post('/upload', [CertificatesController::class, 'upload']);
     // certificate fields
-    Route::get('/{certificates}/fields', [CertificateFieldsController::class, 'index']);
-    Route::get('/{certificates}/fields/{fields}', [CertificateFieldsController::class, 'show']);
+    Route::get('/{certificates}/fields', [CertificateFieldsController::class, 'index']); 
     Route::post('/{certificates}/fields', [CertificateFieldsController::class, 'store']);
-    Route::put('/{certificates}/fields/{fields}', [CertificateFieldsController::class, 'update']);
-    Route::delete('/{certificates}/fields/{fields}', [CertificateFieldsController::class, 'destroy']);
+    Route::delete('/{certificates}/fields/{certificate}', [CertificateFieldsController::class, 'destroy']);
     // certificate users
     Route::get('/{certificates}/users', [CertificateUsersController::class, 'index']);
     Route::get('/{certificates}/users/{users}', [CertificateUsersController::class, 'show']);

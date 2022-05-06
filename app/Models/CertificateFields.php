@@ -9,12 +9,16 @@ class CertificateFields extends Model
 {
     use HasFactory;
     // public $table = 'certificatefields';
+    // primary key
+    public $primaryKey = 'certificate_field_id';
     public $fillable = [
         "certificate_id",
         "certificate_field",
-        'certificate_value',
     ];
-    
+
+    // disable timestamps
+    public $timestamps = false;
+
     /**
      * Get the route key for the model.
      *
