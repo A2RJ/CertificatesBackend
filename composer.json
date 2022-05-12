@@ -11,6 +11,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.2",
         "laravel/sanctum": "^2.15",
+        "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
         "milon/barcode": "^9.0",
         "novay/laravel-word-template": "^1.1",

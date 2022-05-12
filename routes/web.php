@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Google;
 use App\Http\Controllers\ReplaceConvertController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,9 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/google', [Google::class, 'redirectToGoole']);
+Route::get('/callback/google', [Google::class, 'handleGoogleCallback']);
 
 Route::get('/', function () {
     return view('welcome');
