@@ -35,7 +35,9 @@
 -   Certificate - daftar sertifikat [
     certificate_id,
     user_id,
-    certificate_name,
+    name,
+    description,
+    file,
     created_at,
     updated_at
     ]
@@ -53,6 +55,21 @@
     updated_at
     ]
 
-#### Work now
+### List fitures
 
--   Buat landing page verify certificate
+-   Generate certificate
+-   Verify certificate
+
+### Flow generate certificates
+
+-   User login google
+-   create certificates (name, description, file)
+-   create fields by certificate (certificate_field)
+-   invite user to download certificate (send email)
+
+### Flow verify certificates
+
+-   scan qr code dengan html5-qrcode [https://github.com/mebjas/html5-qrcode], kemudia redirect ke halaman verify
+-- opsi 2 [https://yoi.home.blog/2021/02/01/scan-barcode-dengan-webcam-di-website-dengan-zxing-js/]
+-- opsi 3 [https://daily-dev-tips.com/posts/detecting-barcodes-from-the-webcam/]
+- gunakan barcode 
