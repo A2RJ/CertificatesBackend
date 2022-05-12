@@ -30,7 +30,7 @@
 <body>
     <div id="top"></div>
     <div id="capture" style="padding: 10px; background: #f5da55">
-        <h4 style="color: #000; ">Hello world!</h4>
+        <h4 style="color: #000; ">Hello world! QrCode atau Barcode dapat digenerate dengan packages apapun</h4>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{ asset('html2canvas/html2canvas.js') }}"></script>
