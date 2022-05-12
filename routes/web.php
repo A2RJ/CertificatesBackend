@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ReplaceConvertController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +21,9 @@ Route::get('/', function () {
 });
 
 Route::get('/qr', function (Request $request) {
-    // bisa langsung retun $image
-    $image = QR::size(500)
-        ->generate('A simple example of QR code!');
-    return view('qr', compact('image'));
+    QrCode::generate('Make me into a QrCode!', public_path('qr_code.svg'));
+    echo '<img src="'.asset('qr_code.svg').'">';
 });
+
+Route::get('/createCertificates', [ReplaceConvertController::class, 'createCertificates']);
+Route::get('/replaceWord', [ReplaceConvertController::class, 'replaceWord']);

@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Novay\WordTemplate\WordTemplate;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ReplaceConvertController extends Controller
 {
@@ -24,7 +26,9 @@ class ReplaceConvertController extends Controller
         $template->setValue('date', date('d-m-Y'));
         $template->setValue('title', 'Mr.');
         $template->setValue('firstname', 'Ardiansyah ');
-        $template->setValue('lastname', 'Coder');
+        // $template->setValue('lastname', 'Coder');
+
+        $template->setImageValue('lastname', public_path('4445645656.png'));
 
         // /*@ Save Temporary Word File With New Name */
         $saveDocPath = public_path('new-result.docx');
@@ -54,7 +58,7 @@ class ReplaceConvertController extends Controller
 
     // public function convertWordToPDF()
     // {
-    //         /* Set the PDF Engine Renderer Path */
+    //     /* Set the PDF Engine Renderer Path */
     //     $domPdfPath = base_path('vendor/dompdf/dompdf');
     //     \PhpOffice\PhpWord\Settings::setPdfRendererPath($domPdfPath);
     //     \PhpOffice\PhpWord\Settings::setPdfRendererName('DomPDF');
@@ -68,54 +72,57 @@ class ReplaceConvertController extends Controller
     //     echo 'File has been successfully converted';
     // }
 
-    // public function replaceWord()
-    // {
-    //     $file = public_path('certificates_template/template.rtf');
-    //     $replace = [
-    //         '#NAME' => 'Example',
-    //         '#DATE' => '01.01.2022',
-    //         '#NUMBER' => '123456789',
-    //         '#ORGANIZATION' => 'Universitas X',
-    //         '#POSITION' => 'Example position',
-    //         '#DESCRIPTION' => 'Example description',
-    //     ];
+    public function replaceWord()
+    {
+        $src = \QR::size(500)
+            ->generate('A simple example of QR code!');
+        $html = `<img src="{$src}" alt="">`;
+        $file = public_path('certificates_template/template.rtf');
+        $replace = [
+            '#NAME' => 'Example',
+            '#DATE' => '01.01.2022',
+            '#NUMBER' => '123456789',
+            '#ORGANIZATION' => 'Universitas X',
+            '#POSITION' => 'Example position',
+            '#DESCRIPTION' => $src,
+        ];
 
-    //     $filename = 'example.doc';
-    //     echo $this->export($file, $replace, $filename);
-    // }
+        $filename = 'example.doc';
+        echo $this->export($file, $replace, $filename);
+    }
 
-    // public function export($file = null, $replace = null, $filename = 'default.doc')
-    // {
-    //     if (is_null($file))
-    //         return response()->json(['error' => 'This method needs some parameters. Please check documentation.']);
+    public function export($file = null, $replace = null, $filename = 'default.doc')
+    {
+        if (is_null($file))
+            return response()->json(['error' => 'This method needs some parameters. Please check documentation.']);
 
-    //     if (is_null($replace))
-    //         return response()->json(['error' => 'This method needs some parameters. Please check documentation.']);
+        if (is_null($replace))
+            return response()->json(['error' => 'This method needs some parameters. Please check documentation.']);
 
-    //     $dokumen = $this->verify($file);
+        $dokumen = $this->verify($file);
 
-    //     foreach ($replace as $key => $value) {
-    //         $dokumen = str_replace($key, $value, $dokumen);
-    //     }
+        foreach ($replace as $key => $value) {
+            $dokumen = str_replace($key, $value, $dokumen);
+        }
 
-    //     header("Content-type: application/msword");
-    //     header("Content-disposition: inline; filename={$filename}");
-    //     header("Content-length: " . strlen($dokumen));
+        header("Content-type: application/msword");
+        header("Content-disposition: inline; filename={$filename}");
+        header("Content-length: " . strlen($dokumen));
 
-    //     return $dokumen;
-    // }
+        return $dokumen;
+    }
 
-    // public function verify($file)
-    // {
-    //     $arrContextOptions = array(
-    //         "ssl" => array(
-    //             "verify_peer" => false,
-    //             "verify_peer_name" => false,
-    //         ),
-    //     );
+    public function verify($file)
+    {
+        $arrContextOptions = array(
+            "ssl" => array(
+                "verify_peer" => false,
+                "verify_peer_name" => false,
+            ),
+        );
 
-    //     $response = file_get_contents($file, false, stream_context_create($arrContextOptions));
+        $response = file_get_contents($file, false, stream_context_create($arrContextOptions));
 
-    //     return $response;
-    // }
+        return $response;
+    }
 }

@@ -56,5 +56,6 @@ Route::group(['prefix' => 'certificates'], function () {
     Route::put('/{certificates}/users/{users}', [CertificateUsersController::class, 'update']);
     Route::delete('/{certificates}/users/{users}', [CertificateUsersController::class, 'destroy']);
     // create certificate
-    Route::get('/create/{certificates}/users/{users}', [ReplaceConvertController::class, 'createCertificates']);
+    // Route::get('/create/{certificates}/users/{users}', [ReplaceConvertController::class, 'createCertificates']);
+    Route::get('/createCertificates', [ReplaceConvertController::class, 'createCertificates']);
 });
