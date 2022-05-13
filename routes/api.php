@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Google;
 use App\Http\Controllers\CertificateFieldsController;
 use App\Http\Controllers\CertificatesController;
 use App\Http\Controllers\CertificateUsersController;
@@ -36,6 +37,12 @@ Route::get('/csrf-cookie', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
 
+Route::group(['prefix' => 'auth'], function () {
+    Route::group(['prefix' => 'google'], function () {
+        Route::post('/verify', [Google::class, 'verify']);
+    });
+});
+
 // Route group
 Route::group(['prefix' => 'certificates'], function () {
     // certificates
@@ -46,7 +53,7 @@ Route::group(['prefix' => 'certificates'], function () {
     Route::delete('/{certificates}', [CertificatesController::class, 'destroy']);
     Route::post('/upload', [CertificatesController::class, 'upload']);
     // certificate fields
-    Route::get('/{certificates}/fields', [CertificateFieldsController::class, 'index']); 
+    Route::get('/{certificates}/fields', [CertificateFieldsController::class, 'index']);
     Route::post('/{certificates}/fields', [CertificateFieldsController::class, 'store']);
     Route::delete('/{certificates}/fields/{certificate}', [CertificateFieldsController::class, 'destroy']);
     // certificate users
