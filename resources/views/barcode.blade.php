@@ -32,8 +32,8 @@
     <div id="capture" style="padding: 10px; background: #f5da55">
         <h4 style="color: #000; ">Hello world! QrCode atau Barcode dapat digenerate dengan packages apapun</h4>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="{{ asset('html2canvas/html2canvas.js') }}"></script>
+    <script src="{{ asset('generate/axios.min.js') }}"></script>
+    <script src="{{ asset('generate/html2canvas.js') }}"></script>
     <script>
         html2canvas(document.getElementById("capture")).then(canvas => {
             axios.post('/qrpost', {

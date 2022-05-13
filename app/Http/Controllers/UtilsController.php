@@ -29,7 +29,7 @@ class UtilsController extends Controller
         $template->setValue('firstname', 'Ardiansyah ');
         // $template->setValue('lastname', 'Coder');
 
-        $template->setImageValue('lastname', public_path('4445645656.png'));
+        $template->setImageValue('lastname', public_path('qrcode/qr_code.png'));
 
         // /*@ Save Temporary Word File With New Name */
         $saveDocPath = public_path('new-result.docx');
