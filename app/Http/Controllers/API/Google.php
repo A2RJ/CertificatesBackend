@@ -38,19 +38,24 @@ class Google extends Controller
             'email' => $request->email,
         ];
 
-        $user = User::where('email', $post['email'])->first();
-        $user->tokens()->where('name', $request->email)->delete();
+        $user = User::where('email', $request->email)->first();
+        $user->tokens()->where('name', $request->token)->delete();
 
         // check if user exists, then return token
         if ($user) {
+            $user->token = $request->token;
+            $user->save();
             return response()->json([
-                'token' => $user->createToken($user->email)->plainTextToken,
+                'token' => $user->createToken($user->token)->plainTextToken,
                 'message' => 'User already exists',
             ]);
         } else {
             $user = User::create($post);
+            $user->token = $request->token;
+            $user->save();
+
             return response()->json([
-                'token' => $user->createToken($user->email)->plainTextToken,
+                'token' => $user->createToken($user->token)->plainTextToken,
                 'message' => 'User created',
             ]);
         }
@@ -58,10 +63,17 @@ class Google extends Controller
 
     public function getToken(Request $request)
     {
-        $user = User::where('email', $request->email)->first();
-        $user->tokens()->where('name', $request->email)->delete();
-        return response()->json([
-            'token' => $user->createToken($user->email)->plainTextToken,
-        ]);
+        $user = User::where('token', $request->token)->where('email', $request->email)->first();
+        $user->tokens()->where('name', $request->token)->delete();
+
+        if ($user) {
+            return response()->json([
+                'token' => $user->createToken($user->token)->plainTextToken
+            ], 200);
+        } else {
+            return response()->json([
+                'token' => null,
+            ], 401);
+        }
     }
 }
