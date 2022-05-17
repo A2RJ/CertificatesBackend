@@ -27,18 +27,41 @@ class Google extends Controller
 
     public function verify(Request $request)
     {
-        // periksa apakah token (dari jwt params di nextjs) valid
-        // $token = $request->input('token');
-        // $user = Socialite::driver('google')->userFromToken($token);
-        // return response()->json($user);
+        $post = [
+            'name' => $request->name,
+            'first_name' => $request->given_name,
+            'last_name' => $request->family_name,
+            'picture' => $request->picture,
+            'provider' => 'google',
+            'provider_id' => $request->sub,
+            'locale' => $request->locale,
+            'email' => $request->email,
+        ];
 
-        // check is user valid
-        $user = User::where('email', $request->input('email'))->first();
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
+        $user = User::where('email', $post['email'])->first();
+        $user->tokens()->where('name', $request->email)->delete();
+
+        // check if user exists, then return token
+        if ($user) {
+            return response()->json([
+                'token' => $user->createToken($user->email)->plainTextToken,
+                'message' => 'User already exists',
+            ]);
         } else {
-            $user['token'] = "Token";
-            return response()->json($user);
+            $user = User::create($post);
+            return response()->json([
+                'token' => $user->createToken($user->email)->plainTextToken,
+                'message' => 'User created',
+            ]);
         }
+    }
+
+    public function getToken(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        $user->tokens()->where('name', $request->email)->delete();
+        return response()->json([
+            'token' => $user->createToken($user->email)->plainTextToken,
+        ]);
     }
 }

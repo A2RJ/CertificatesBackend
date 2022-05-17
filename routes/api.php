@@ -40,6 +40,7 @@ Route::get('/csrf-cookie', function () {
 Route::group(['prefix' => 'auth'], function () {
     Route::group(['prefix' => 'google'], function () {
         Route::post('/verify', [Google::class, 'verify']);
+        Route::post('/token', [Google::class, 'getToken']);
     });
 });
 
