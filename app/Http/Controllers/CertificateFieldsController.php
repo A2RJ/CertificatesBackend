@@ -22,10 +22,11 @@ class CertificateFieldsController extends Controller
 
         $certificateFields = [];
         foreach ($request->all() as $certificateField) {
-            $certificateFields[] = CertificateFields::create($certificateField);
+            $certificateFields[] = $certificateField;
         }
 
-        return response()->json($certificateFields, 201);
+        $certificate = CertificateFields::insert($certificateFields);
+        return response()->json($certificate, 201);
     }
 
     public function destroy($certificate, $certificateField)

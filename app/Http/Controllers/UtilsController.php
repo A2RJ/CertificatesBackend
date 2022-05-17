@@ -59,7 +59,8 @@ class UtilsController extends Controller
 
     public function generateBarcode()
     {
-        return view('barcode');
+        $barcode = "123456789";
+        return view('barcode', compact('barcode'));
     }
 
     public function postBarcode(Request $request)
